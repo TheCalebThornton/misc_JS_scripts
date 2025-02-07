@@ -25,3 +25,11 @@ This project is a code assessment for HubSpot (Gather HubSpot API data. Modify. 
    npm start
    ```
    The application will be available at http://localhost:8080 (see server.js to adjust port)
+
+## Usage
+
+1. Open your web browser and navigate to http://localhost:8080
+
+2. Click the "Get Data" button to fetch data from the API
+   - The GET response will be processed (according to HubSpot rules, TBD).
+   - The processed data will be sent via POST to HubSpot and printed below the button.

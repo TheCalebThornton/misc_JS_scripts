@@ -14,29 +14,34 @@ const getHubSpotData = async () => {
 }
 
 const postHubSpotData = async (contactData) => {
-    fetch(POST_API, {
+    return fetch(POST_API, {
         method: 'POST',
         // headers: {
         //     'Authorization': `Bearer ${apiKey}`,
         //     'Content-Type': 'application/json'
         // },
         body: JSON.stringify(contactData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch(error => {
-        console.error('Error:', error);
     });
 }
 
 async function processHubSpotData() {
+    let jsonData;
+    let output;
     try {
         const data = await getHubSpotData();
-        const jsonData = await data.json();
-        return jsonData;
+        jsonData = await data.json();
     } catch (error) {
         return error;
     }
+
+    // Process HubSpot data
+    output = jsonData;
+
+    try {
+        await postHubSpotData(output);
+    } catch (error) {
+        return error;
+    }
+
+    return output;
 }
