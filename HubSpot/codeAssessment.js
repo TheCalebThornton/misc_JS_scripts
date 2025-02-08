@@ -1,30 +1,6 @@
-const GET_API = 'https://api.genderize.io?name=luc';
-const POST_API = '';
-const apiKey = 'your_api_key_here';
+import { getHubSpotData, postHubSpotData } from './services/apiClient.js';
 
-const getHubSpotData = async () => {
-    return fetch(GET_API, {
-        method: 'GET',
-        // headers: {
-        //     'Authorization': `Bearer ${apiKey}`,
-        //     'Content-Type': 'application/json'
-        // }
-    });
-
-}
-
-const postHubSpotData = async (contactData) => {
-    return fetch(POST_API, {
-        method: 'POST',
-        // headers: {
-        //     'Authorization': `Bearer ${apiKey}`,
-        //     'Content-Type': 'application/json'
-        // },
-        body: JSON.stringify(contactData)
-    });
-}
-
-async function processHubSpotData() {
+export async function processHubSpotData() {
     let jsonData;
     let output;
     try {

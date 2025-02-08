@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>HubSpot API Test</title>
+    <title>HubSpot HTTP Assessment</title>
     <style>
         .result-container {
             margin-top: 20px;
@@ -12,22 +12,27 @@
     </style>
 </head>
 <body>
-    <h1>HubSpot API Test</h1>
+    <h1>HubSpot HTTP Assessment</h1>
     <button onclick="handleClick()">Get Data</button>
     <div id="result" class="result-container">
         <p>Results will appear here...</p>
     </div>
-    <script src="codeAssessment.js"></script>
-    <script>
-        function handleClick() {
+    
+    <script type="module">
+        import { processHubSpotData } from './codeAssessment.js';
+        
+        window.handleClick = async function() {
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = 'Loading...';
-            processHubSpotData().then((data) => {
+            try {
+                const data = await processHubSpotData();
                 resultDiv.innerHTML = `
-                    <h3>API Response:</h3>
+                    <h3>Processed Data:</h3>
                     <pre>${JSON.stringify(data, null, 2)}</pre>
                 `;
-            });
+            } catch (error) {
+                resultDiv.innerHTML = `Error: ${error.message}`;
+            }
         }
     </script>
 </body>
