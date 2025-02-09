@@ -1,27 +1,27 @@
-import { getHubSpotData, postHubSpotData, getHubSpotDataTestSample, getHubSpotDataTestSampleResults} from './services/apiClient.js';
+import { getHubSpotData, postHubSpotData, getHubSpotDataTestSampleResults} from './services/apiClient.js';
 import { sample1 } from './test/sampleJson.js';
 
 export async function processHubSpotData() {
-    let jsonData, output;
+    let jsonData = sample1, output;
     try {
         const data = await getHubSpotData();
         jsonData = await data.json();
     } catch (error) {
         return error;
     }
-    try {
-        const data = await getHubSpotDataTestSample();
-        jsonData = await data.json();
-    } catch (error) {
-        return error;
-    }
+    // try {
+    //     const data = await getHubSpotDataTestSample();
+    //     jsonData = await data.json();
+    // } catch (error) {
+    //     return error;
+    // }
 
-    try {
-        const data = await getHubSpotDataTestSampleResults();
-        await data.json();
-    } catch (error) {
-        return error;
-    }
+    // try {
+    //     const data = await getHubSpotDataTestSampleResults();
+    //     await data.json();
+    // } catch (error) {
+    //     return error;
+    // }
 
     // Group calls by customer
     const callsByCustomer = {};
@@ -44,18 +44,15 @@ export async function processHubSpotData() {
         const callsByDay = {};
         
         customerCalls.forEach(call => {
-            const startDate = new Date(call.startTime);
-            const endDate = new Date(call.endTime);
+            const startTimestamp = call.startTime;
+            const endTimestamp = call.endTime;
             
             // Get all dates between start and end
-            const currentDate = new Date(startDate);
-            while (currentDate < endDate) {
-                let dateStr = currentDate.toUTCString();
-                dateStr = `${currentDate.getUTCFullYear()}-${currentDate.getUTCMonth()+1}-${currentDate.getUTCDate()}`
-                let startDateStr = startDate.toUTCString();
-                startDateStr = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth()+1}-${startDate.getUTCDate()}`
-                let endDateStr = endDate.toUTCString();
-                endDateStr = `${endDate.getUTCFullYear()}-${endDate.getUTCMonth()+1}-${endDate.getUTCDate()}`
+            let currentTimestamp = startTimestamp;
+            while (currentTimestamp < endTimestamp) {
+                let dateStr = new Date(currentTimestamp).toISOString().split('T')[0];
+                let startDateStr = new Date(startTimestamp).toISOString().split('T')[0];
+                let endDateStr = new Date(endTimestamp).toISOString().split('T')[0];
                 
                 if (!callsByDay[dateStr]) {
                     callsByDay[dateStr] = [];
@@ -80,15 +77,18 @@ export async function processHubSpotData() {
                 }
                 
                 // For days in between, add start at beginning of day
-                if (currentDate > startDate && currentDate < endDate) {
+                const currentDate = new Date(currentTimestamp);
+                if (currentTimestamp > startTimestamp && currentTimestamp < endTimestamp) {
                     callsByDay[dateStr].push({ 
-                        time: Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate()),
+                        time: Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate(), 0,0,0,0),
                         type: 'start',
                         callId: call.id 
                     });
                 }
-                
-                currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+
+                // Increment to the next day
+                currentDate.setDate(currentDate.getDate() + 1);
+                currentTimestamp = Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(), currentDate.getUTCDate(), 0,0,0,0);
             }
         });
 
@@ -97,7 +97,6 @@ export async function processHubSpotData() {
         Object.keys(callsByDay).forEach(date => {
             const events = callsByDay[date];
             events.sort((a, b) => a.time - b.time);
-            console.log('events, sorted:', events);
             
             let currentCalls = 0;
             let maxConcurrentCalls = 0;

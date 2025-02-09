@@ -1,34 +1,28 @@
 export const sample1 = {
-    "callRecords": [
-      {
-        callId: "76e1dcb2-9cec-48e8-ad2d-00e6a1aa6a7c",
-        customerId: 77646,
-        endTimestamp: 1705520580000,
-        startTimestamp: 1705515000000
-      },
-      {
-        callId: "8f23a8d1-4c12-49e5-b34f-00e6a1aa6a7c", 
-        customerId: 82134,
-        endTimestamp: 1705524180000,
-        startTimestamp: 1705518600000
-      },
-      {
-        callId: "92e5bc73-6f89-4a2d-c56e-00e6a1aa6a7c",
-        customerId: 65432,
-        endTimestamp: 1705527780000,
-        startTimestamp: 1705522200000
-      },
-      {
-        callId: "3a7d9ef4-2b56-4c8e-9d1a-00e6a1aa6a7c",
-        customerId: 91287,
-        endTimestamp: 1705531380000,
-        startTimestamp: 1705525800000
-      },
-      {
-        callId: "5c4b8e2f-9a3d-4f7b-8e2c-00e6a1aa6a7c",
-        customerId: 73459,
-        endTimestamp: 1705534980000,
-        startTimestamp: 1705529400000
-      }
-    ]
-  }
+  callRecords: [
+    {
+      "customerId": 123,
+      "callId": "Jan1st_11:30pm_to_Jan1st_11:40pm_Call",
+      "startTimestamp": 1704151800000,
+      "endTimestamp": 1704152400000
+    },
+    {
+      "customerId": 123,
+      "callId": "Jan2nd_11:50pm_to_Jan3rd_12:20am_Call",
+      "startTimestamp": 1704239400000,
+      "endTimestamp": 1704241200000
+    },
+    {
+      "customerId": 123,
+      "callId": "Jan3rd_12:10am_to_Jan3rd_1:00am_Call",
+      "startTimestamp": 1704240600000,
+      "endTimestamp": 1704243600000
+    },
+    {
+      "customerId": 123,
+      "callId": "Jan4th_11:00pm_to_Jan5th_12:00am_Call",
+      "startTimestamp": 1704409200000,
+      "endTimestamp": 1704412800000
+    }
+  ]
+}
